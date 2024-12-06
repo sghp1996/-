@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>拍摄照片</title>
+  </head>
+  <body>
+    <h1>拍摄一张照片</h1>
+    <video id="video" autoplay playsinline width="320" height="240"></video>
+    <canvas id="canvas" width="320" height="240" style="display: none"></canvas>
+    <button id="capture">拍照</button>
+    <button id="upload">上传照片</button>
+    <script>
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const captureButton = document.getElementById("capture");
+      const uploadButton = document.getElementById("upload");
+      const context = canvas.getContext("2d");
+
+      // 获取摄像头权限
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          video.srcObject = stream;
+        })
+        .catch((error) => {
+          console.error("摄像头访问失败:", error);
+          alert("无法访问摄像头，请检查权限设置。");
+        });
+
+      // 拍摄照片
+      captureButton.addEventListener("click", () => {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        alert("照片已拍摄！");
+      });
+
+      // 上传照片
+      uploadButton.addEventListener("click", () => {
+        canvas.toBlob((blob) => {
+          const formData = new FormData();
+          formData.append("photo", blob, "photo.jpg");
+
+          fetch("https://your-server.com/upload", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert("照片上传成功！");
+            })
+            .catch((error) => {
+              console.error("上传失败:", error);
+            });
+        }, "image/jpeg");
+      });
+    </script>
+  </body>
+</html>
