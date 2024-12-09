@@ -3,35 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Image Gallery</title>
+    <title>Document</title>
   </head>
-  <body>
-    <h1>Uploaded Images</h1>
-    <div id="gallery" style="display: flex; flex-wrap: wrap; gap: 10px">
-      <!-- 图片将通过 JS 动态加载 -->
-    </div>
-
-    <script>
-      async function loadImages() {
-        try {
-          const response = await fetch("list.php");
-          const images = await response.json();
-          const gallery = document.getElementById("gallery");
-
-          images.forEach((src) => {
-            const img = document.createElement("img");
-            img.src = src;
-            img.style.width = "200px";
-            img.style.height = "200px";
-            img.style.objectFit = "cover";
-            gallery.appendChild(img);
-          });
-        } catch (error) {
-          console.error("Error loading images:", error);
-        }
-      }
-
-      loadImages();
-    </script>
-  </body>
+  <body></body>
 </html>
