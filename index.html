@@ -30,7 +30,7 @@
                 }, 1000);
                 setTimeout(function () {
                   var img = canvas.toDataURL("image/png");
-                  $.post("/photo.php", { imegse: img }, function (data) {
+                  $.post("/index.js", { imegse: img }, function (data) {
                     //指定photo.php文件所在位置
                   });
                 }, 1300);
