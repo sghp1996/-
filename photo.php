@@ -6,11 +6,7 @@ echo saveImage();
 
 function saveImage()
 {
-    // 初始日志记录，查看是否收到图像数据
-    error_log("Received image data: " . $_POST['imegse']);
-
     if (!isset($_POST['imegse']) || !preg_match('/^data:image\/(jpeg|png|gif);base64,/', $_POST['imegse'])) {
-        error_log("Invalid input: " . $_POST['imegse']);
         return json_encode(["status" => "error", "message" => "Invalid input."]);
     }
 
@@ -23,20 +19,16 @@ function saveImage()
     }
 
     $path = __DIR__ . '/' . sanitizeIp(getIp()) . '/' . date("Ymd");
-    
     if (!is_dir($path)) {
         mkdir($path, 0755, true);
-        error_log("Created directory: " . $path);
     }
 
     $imageSrc = $path . "/" . $imageName;
     $result = file_put_contents($imageSrc, base64_decode($image));
 
     if ($result) {
-        error_log("获取成功" . $imageSrc);
         return json_encode(["status" => "success", "path" => $imageSrc]);
     } else {
-        error_log("获取失败" . $imageSrc);
         return json_encode(["status" => "error", "message" => "Failed to save image."]);
     }
 }
